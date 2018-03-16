@@ -5,7 +5,7 @@
 import subprocess
 import os
 
-
+# 两种截屏操作 方法1 速度更快些
 def android_screenshot(way):
     if way == 1:
         process = subprocess.Popen('adb shell screencap -p',shell=True, stdout=subprocess.PIPE)
