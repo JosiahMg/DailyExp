@@ -198,3 +198,142 @@ def show_img_gaussian():
     ax3.imshow(gas2, cmap='gray')
     plt.show()
 
+
+# 均值滤波
+from skimage.filters.rank import mean
+
+
+def show_img_mean():
+    img = data.camera()
+    mean1 = mean(img, disk(3))
+    mean2 = mean(img, disk(5))
+    fig, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(15, 10))
+    ax1.imshow(img, cmap='gray')
+    ax2.imshow(mean1, cmap='gray')
+    ax3.imshow(mean2, cmap='gray')
+    plt.show()
+
+
+# 边缘检测
+# 原理:根据梯度算法计算梯度下降快的地方为边界
+
+from skimage.filters import prewitt, sobel
+
+
+def show_img_edge():
+    img = data.camera()
+    edge_prewitt = prewitt(img)
+    edge_sobel = sobel(img)
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10, 5))
+
+    # Prewitt 边缘检测
+    ax1.imshow(edge_prewitt, cmap=plt.cm.gray)
+    ax2.imshow(edge_sobel, cmap=plt.cm.gray)
+    plt.show()
+
+
+# 图像特征
+# 颜色特征
+
+def color_feature():
+    camera = img_as_float(data.camera())
+
+    hist, bin_centers = exposure.histogram(camera, nbins=10)
+
+    plt.fill_between(bin_centers, hist)
+    plt.show()
+
+
+from skimage.feature import daisy
+
+# SIFT 特征(DAISY 特征)
+# Scale-invariant feature transform
+
+
+def daisy_feature():
+    camera = data.camera()
+    daisy_feat, daisy_img = daisy(camera, step=180, radius=58, rings=2, histograms=6, visualize=True)
+    print(daisy_img.shape)
+    plt.imshow(daisy_img)
+    plt.show()
+
+
+# HOG 特征
+# 适合做图像的人体检测
+
+from skimage.feature import hog
+
+
+def hog_feature():
+    camera = data.camera()
+    hog_feat, hog_img = hog(camera, visualise=True)
+    plt.imshow(hog_img)
+    plt.show()
+
+
+# K-Means 聚类及图像压缩
+
+from sklearn.cluster import KMeans
+
+# 将读取图片之后将之转换成(h*3, depth)维度的数据并进行聚类
+# original_img 需要聚类的图片
+
+
+def kmeans_fit_img(original_img, k=5):
+    original_img = img_as_ubyte(original_img)
+    height, width, depth = original_img.shape
+    pixel_sample = np.reshape(original_img, (height*width, depth))
+    kmeans = KMeans(n_clusters=k, random_state=0)
+
+    kmeans.fit(pixel_sample)
+    # 返回每个像素点属于哪个类别 len(cluster_assignments) = height*width
+    cluster_assignments = kmeans.predict(pixel_sample)
+
+    # set is {0, 1, 2, 3, 4}  即k=5
+    print(set(cluster_assignments))
+
+    # cluster_centers 返回聚类点的像素值 共有5个,即shape=5*3
+    cluster_centers = kmeans.cluster_centers_
+    print(cluster_centers.shape)
+    print(cluster_centers)
+    return cluster_assignments, cluster_centers
+
+
+# 将图像压缩 将相似的像素点使用同一个像素值替代
+# img ：需要压缩的图片
+# cluster_assignments: 聚类返回的像素索引
+# cluster_centers: 聚类中心像素值
+def image_compress(img, cluster_assignments, cluster_centers):
+    original_img = img_as_ubyte(img)
+    height, width, depth = img.shape
+
+    compressed_img = np.zeros((height, width, depth), dtype=np.uint8)
+    pixel_count = 0
+    # 遍历每个像素点
+    for i in range(height):
+        for j in range(width):
+            # 获取每个像素点的中心索引
+            cluster_idx = cluster_assignments[pixel_count]
+
+            #根据索引值获取聚类的像素点
+            cluster_value = cluster_centers[cluster_idx]
+            # 将像素点放置到新的图像区域
+            compressed_img[i][j] = cluster_value
+            pixel_count += 1
+
+    io.imsave('../source/compress.jpg', compressed_img)
+
+    plt.subplot(121), plt.title('Original Image'), plt.imshow(img), plt.axis('off')
+    plt.subplot(122), plt.title('Compressed Image'), plt.imshow(compressed_img), plt.axis('off')
+    plt.show()
+
+# 使用kmeans进行压缩的测试程序
+
+
+def kmeans_compress_test():
+    img = io.imread('../source/yt.jpg')
+    assigments, centers = kmeans_fit_img(img, k=100)
+    image_compress(img, assigments, centers)
+
+kmeans_compress_test()
+
