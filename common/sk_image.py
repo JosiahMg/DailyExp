@@ -335,5 +335,5 @@ def kmeans_compress_test():
     assigments, centers = kmeans_fit_img(img, k=100)
     image_compress(img, assigments, centers)
 
-kmeans_compress_test()
+
 
