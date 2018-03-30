@@ -1,7 +1,7 @@
 # _*_coding:utf-8 _*_
 # Created time:3/30 2018
 # Author: JosiahMg
-
+# env: anaconda python3.6
 
 import numpy as np
 import matplotlib.pyplot as plt
