@@ -59,4 +59,3 @@ def backward():
         print('w2:', sess.run(w2))
 
 
-backward()

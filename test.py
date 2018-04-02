@@ -4,11 +4,8 @@
 # env: anaconda python3.6
 import os
 from common import phone_cmd
-
-
-def test_phone_cmd():
-    phone_cmd.android_screenshot(1)
+from tf import backward
 
 
 if __name__ == "__main__":
-    test_phone_cmd()
+    backward.backward()
