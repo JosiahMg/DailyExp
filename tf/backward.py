@@ -6,14 +6,14 @@
 import numpy as np
 import tensorflow as tf
 
-
+# 每次喂给神经网络特征数
 BATCH_SIZE = 8
 
 
 def backward():
 
     seed = 23455
-    # 随机32组数据，且每组的数据和小于1则对应的表情y为1 否则为0
+    # 随机32组数据，且每组的数据和小于1则对应的标签y为1 否则为0
     rmd = np.random.RandomState(seed)
     X = rmd.rand(32, 2)
     Y_ = [[int(x0 + x1 < 1)] for (x0, x1) in X]
