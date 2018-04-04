@@ -109,4 +109,4 @@ def regularization(re_enable=False, hidden_layer_sizes=11):
     plt.show()
 
 
-regularization(re_enable=False, hidden_layer_sizes=20)
+regularization(re_enable=True, hidden_layer_sizes=20)
