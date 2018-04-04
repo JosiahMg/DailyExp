@@ -49,7 +49,7 @@ LEARNING_RATE_STEP = 1     # 多少轮BATCH_SIZE后更新一次学习率
 
 # steps:迭代次数
 # 指数衰减学习率
-# global_step的作业是什么？
+# global_step的作用是什么？
 
 
 def exponential_learn_rate(steps):
