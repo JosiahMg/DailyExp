@@ -37,6 +37,7 @@ def get_bias(shape):
 # hidden_layer_sizes: 网络层个数
 # 默认使用激活函数为relu
 
+
 def regularization(re_enable=False, hidden_layer_sizes=11):
     seed = 2
     rdm = np.random.RandomState(seed)
@@ -108,4 +109,4 @@ def regularization(re_enable=False, hidden_layer_sizes=11):
     plt.show()
 
 
-regularization(re_enable=True)
+regularization(re_enable=False, hidden_layer_sizes=20)
