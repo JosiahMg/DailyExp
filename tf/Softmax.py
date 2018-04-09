@@ -8,7 +8,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 # 从tensorflow中获取手写图片集
-mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+mnist = input_data.read_data_sets('../source/MNIST_data', one_hot=True)
 
 # mnist.train.images.shape = (55000, 784)
 # 表示有55000张图片，每个图片有784 = 28*28 个像素点
