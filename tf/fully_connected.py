@@ -1,5 +1,11 @@
 # _*_ coding:utf-8 _*_
 
+# tf.get_colletction('') 从集合中取全部变量，生成一个列表
+# tf.add_n([])   列表内对应元素相加
+# tf.cast(x, dtype)  把x转为dtype类型
+# tf.argmax(x, axis)  返回最大值所在索引号，如：tf.argmax([1, 0, 0], 1) 返回0
+# tf.equal(A, B) : 两个矩阵或者向量的相等的元素，如果是相等的那就返回True，反正返回False，返回的值的矩阵维度和A相同
+
 import tensorflow as tf
 import os
 from tensorflow.examples.tutorials.mnist import input_data

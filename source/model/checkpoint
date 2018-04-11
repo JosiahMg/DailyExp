@@ -1,0 +1,6 @@
+model_checkpoint_path: "mnist_model_fully_connected-49001"
+all_model_checkpoint_paths: "mnist_model_fully_connected-45001"
+all_model_checkpoint_paths: "mnist_model_fully_connected-46001"
+all_model_checkpoint_paths: "mnist_model_fully_connected-47001"
+all_model_checkpoint_paths: "mnist_model_fully_connected-48001"
+all_model_checkpoint_paths: "mnist_model_fully_connected-49001"
