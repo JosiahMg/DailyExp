@@ -24,9 +24,9 @@ LEARNING_RATE_DECAY = 0.99
 REGULARIZER = 0.0001
 STEPS = 50000
 MOVING_AVERAGE_DECAY = 0.99
-MODEL_SAVE_PATH = '../source/model'
+MODEL_SAVE_PATH = '..\source\model'
 MODEL_NAME = 'mnist_model_fully_connected'
-
+ROOT_PATH = os.path.abspath('..')
 
 # 定义前向传播
 
@@ -114,6 +114,36 @@ def backward(mnist):
 def main():
     mnist_data = input_data.read_data_sets('../source/MNIST_data/', one_hot=True)
     backward(mnist_data)
+
+# 使用预测后的模型进行手写图片的预测
+# img_arr : 1 * 784
+# model_path : 模型路径
+
+
+def restore_model(img_arr, model_path):
+    with tf.Graph().as_default() as tg:
+        x = tf.placeholder(tf.float32, [None, INPUT_NODE])
+        y = forward(x, None)
+        pre_value = tf.argmax(y, 1)
+
+        variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY)
+        variables_to_restore = variable_averages.variables_to_restore()
+        saver = tf.train.Saver(variables_to_restore)
+
+        with tf.Session() as sess:
+            ckpt = tf.train.get_checkpoint_state(model_path)
+            if ckpt and ckpt.model_checkpoint_path:
+                saver.restore(sess, ckpt.model_checkpoint_path)
+                pre_value = sess.run(pre_value, feed_dict={x: img_arr})
+                return pre_value
+            else:
+                print('No checkpoint file found')
+                return -1
+
+
+
+
+
 
 
 if __name__ == '__main__':

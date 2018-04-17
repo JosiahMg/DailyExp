@@ -7,6 +7,11 @@ import time
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 from tf import fully_connected
+from tf import generate_data
+
+
+HAND_WRITE_PATH = './source/handwrite_pic'
+
 
 '''
 读取source/model目录下的模型，
@@ -46,8 +51,20 @@ def fully_connected_test():
             time.sleep(5)   # 每隔5s执行一次
 
 
+# 预测手写的图片的数值
+# 图片的位置 source/handwrite_pic/
+
+
+def full_connected_predict_hand_write(path):
+    pic_arr = generate_data.pre_pic(path)
+    pre_value = fully_connected.restore_model(pic_arr, './source/model')
+    print('The prediction number is',pre_value)
+
+
 def main():
-    fully_connected_test()
+    for i in range(10):
+        pic_name = HAND_WRITE_PATH + '/%d.png'%i
+        full_connected_predict_hand_write(pic_name)
 
 
 if __name__ == '__main__':
